@@ -10,8 +10,10 @@ public class Coche {
 	private int potencia;
 	private double velocidad;
 	private double km_recorridos;
+	private boolean bot;
+	private boolean terminado;
 
-	public Coche(String nombre_piloto, int dorsal, double distancia_carrera) {
+	public Coche(String nombre_piloto, int dorsal, double distancia_carrera, boolean bot) {
 		this.nombre_piloto = nombre_piloto;
 		this.dorsal = dorsal;
 		this.distancia_carrera = distancia_carrera;// antes de crear objeto coche se pide
@@ -19,6 +21,20 @@ public class Coche {
 		potencia = 50;
 		this.velocidad = 0;
 		this.km_recorridos = 0;
+		this.bot = bot;
+		terminado = false;
+	}
+
+	public boolean isTerminado() {
+		return terminado;
+	}
+
+	public void setTerminado(boolean terminado) {
+		this.terminado = terminado;
+	}
+
+	public boolean isBot() {
+		return bot;
 	}
 
 	public String getNombre_piloto() {
@@ -62,7 +78,8 @@ public class Coche {
 	}
 
 	public void reArrancarCoche() {// falta comprobas si otro ha terminado
-		if (estado.equalsIgnoreCase("acidentado")) {
+		if (estado.equalsIgnoreCase("accidentado")) {
+			System.out.println("Km recorridos" + km_recorridos);
 			estado = "marcha";
 		} else {
 			System.out.println("no estas accidentado");
@@ -77,10 +94,12 @@ public class Coche {
 	}
 
 	public void acelerar() {
-		km_recorridos += velocidad;
+		
 		if (!estado.equalsIgnoreCase("accidentado")) {
 			velocidad += calcularAceleracion();
-			System.out.println("velocidad: "+velocidad);
+			System.out.println("velocidad: " + velocidad);
+			System.out.println("Km recorridos" + km_recorridos);
+			km_recorridos += velocidad;
 			if (velocidad >= 200) {
 				estado = "accidentado";
 				velocidad = 0;
@@ -93,7 +112,8 @@ public class Coche {
 
 	public void frenar() {
 		double frenazo;
-		if (velocidad > 0 || !estado.equalsIgnoreCase("accidentado")) {
+		System.out.println("Km recorridos" + km_recorridos);
+		if (!estado.equalsIgnoreCase("accidentado") && velocidad > 0) {
 			frenazo = calcularAceleracion();
 			km_recorridos += frenazo;
 			velocidad -= frenazo;
@@ -112,5 +132,4 @@ public class Coche {
 				+ ", km_recorridos=" + km_recorridos + "]";
 	}
 
-	
 }
