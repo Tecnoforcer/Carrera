@@ -79,9 +79,11 @@ public class Coche {
 
 	public void reArrancarCoche() {// falta comprobas si otro ha terminado
 		if (estado.equalsIgnoreCase("accidentado")) {
+			if (!bot)
 			System.out.println("Km recorridos" + km_recorridos);
 			estado = "marcha";
 		} else {
+			if (!bot)
 			System.out.println("no estas accidentado");
 		}
 	}
@@ -94,34 +96,45 @@ public class Coche {
 	}
 
 	public void acelerar() {
-		
+
 		if (!estado.equalsIgnoreCase("accidentado")) {
 			velocidad += calcularAceleracion();
-			System.out.println("velocidad: " + velocidad);
-			System.out.println("Km recorridos" + km_recorridos);
 			km_recorridos += velocidad;
+			if (!bot) {
+				System.out.println("Km recorridos" + km_recorridos);
+				System.out.println("velocidad: " + velocidad);
+			}
+
 			if (velocidad >= 200) {
 				estado = "accidentado";
 				velocidad = 0;
+				if (!bot)
 				System.out.println("te has accidentado");
 			}
 		} else {
+			if (!bot)
 			System.out.println("has tenido un accidente, tienes que rearrancar");
 		}
 	}
 
 	public void frenar() {
 		double frenazo;
-		System.out.println("Km recorridos" + km_recorridos);
+
 		if (!estado.equalsIgnoreCase("accidentado") && velocidad > 0) {
 			frenazo = calcularAceleracion();
 			km_recorridos += frenazo;
 			velocidad -= frenazo;
+			
 			if (velocidad < 0) {
 				velocidad = 0;
 			}
 		} else {
+			if (!bot)
 			System.out.println("deberias replantearte tus opciones en la vida");
+		}
+		if (!bot) {
+			System.out.println("Km recorridos" + km_recorridos);
+			System.out.println("velocidad: " + velocidad);
 		}
 	}
 

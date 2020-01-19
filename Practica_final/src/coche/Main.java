@@ -40,8 +40,7 @@ public class Main {
 					}
 				} else if (!c[i].isTerminado() && c[i].isBot()) {
 					r = new Random();
-					botaction = r.nextInt(2);
-					System.out.println(botaction);
+					botaction = r.nextInt(3);
 
 					if (c[i].getEstado().equalsIgnoreCase("accidentado")) {
 						botaction = 3;
@@ -63,7 +62,9 @@ public class Main {
 
 					if (c[i].getKm_recorridos() >= c[i].getDistancia_carrera()) {
 						c[i].setTerminado(true);
-						System.out.println("has terminado");
+						if (!c[i].isBot()) {
+							System.out.println("has terminado");
+						}
 					}
 				}
 			}
@@ -94,6 +95,7 @@ public class Main {
 	public static void main(String[] args) {
 		boolean correcto = false;
 		boolean bot = false;
+		boolean terminado = false;
 		int numJugadoresBot = 1;
 		int numJugadoresHumanos = 1;// not implemented
 		int dorsal = 0;
@@ -144,21 +146,20 @@ public class Main {
 						try {
 							correcto = true;
 
-							if (numJugadoresHumanos != 0 && cont <= numJugadoresHumanos) {
+							if (numJugadoresHumanos != 0 && cont < numJugadoresHumanos) {
 								System.out.println("escribe el dorsal");
 								dorsal = leerI.nextInt();
 								for (int j = 0; j < numJugadoresHumanos; j++) {
 									do {
-										correcto=true;
+										correcto = true;
 										if (c[j] != null && (c[j].getDorsal() == dorsal)) {
-										System.out.println("el dorsal ya esta escogido");
-										correcto = false;
-										cont--;
-										j--;
-									}
+											System.out.println("el dorsal ya esta escogido");
+											correcto = false;
+											cont--;
+											j--;
+										}
 									} while (!correcto);
-									
-									
+
 								}
 
 								System.out.println("escribe el nombre");
@@ -167,10 +168,10 @@ public class Main {
 								cont++;
 							} else if (cont <= (numJugadoresBot + numJugadoresHumanos)) {
 
-								for (int j = (numJugadoresHumanos - 1); j < numJugadoresBot; j++) {
+								for (int j = (numJugadoresHumanos); j < numJugadoresBot; j++) {
 
 									do {
-										correcto=true;
+										correcto = true;
 										dorsal = dorsalBot();
 
 										nombre_piloto = "bot " + (i + 1 - (numJugadoresHumanos));
@@ -185,6 +186,7 @@ public class Main {
 
 									} while (!correcto);
 								}
+								bot = true;
 							}
 						} catch (Exception e) {
 							correcto = false;
@@ -216,7 +218,10 @@ public class Main {
 
 				if (correcto && (numJugadoresHumanos > 0)) {
 
-					jugar(c, (numJugadoresHumanos + numJugadoresBot));
+					terminado = jugar(c, (numJugadoresHumanos + numJugadoresBot));
+					if (terminado) {
+						opc = 4;
+					}
 
 				} else if (numJugadoresHumanos > 0) {
 					System.out.println("inicia la carrera");
