@@ -6,104 +6,20 @@ import java.util.Scanner;
 
 public class Main {
 
-	private static boolean jugar(Coche c[], int jugadores) {
-		boolean juegoTerminado = false;
-		boolean terminado = false;// sobra?
-		int opcAUX = 0;
-		int botaction = 0;
-		int hanterminado = 0;
-		Random r;
-		do {
-
-			for (int i = 0; i < c.length; i++) {
-				if (!c[i].isTerminado() && !c[i].isBot()) {
-
-					opcAUX = Menu.gameMenu();
-					switch (opcAUX) {
-					case 1:
-						c[i].acelerar();
-						break;
-					case 2:
-						c[i].frenar();
-						break;
-					case 3:
-						c[i].reArrancarCoche();
-						break;
-
-					default:
-						break;
-					}
-
-					if (c[i].getKm_recorridos() >= c[i].getDistancia_carrera()) {
-						c[i].setTerminado(true);
-						System.out.println("has terminado");
-					}
-				} else if (!c[i].isTerminado() && c[i].isBot()) {
-					r = new Random();
-					botaction = r.nextInt(3);
-
-					if (c[i].getEstado().equalsIgnoreCase("accidentado")) {
-						botaction = 3;
-					}
-					switch (botaction) {
-					case 1:
-						c[i].acelerar();
-						break;
-					case 2:
-						c[i].frenar();
-						break;
-					case 3:
-						c[i].reArrancarCoche();
-						break;
-
-					default:
-						break;
-					}
-
-					if (c[i].getKm_recorridos() >= c[i].getDistancia_carrera()) {
-						c[i].setTerminado(true);
-						if (!c[i].isBot()) {
-							System.out.println("has terminado");
-						}
-					}
-				}
-			}
-
-			for (int i = 0; i < c.length; i++) {
-				hanterminado = 0;
-				if (c[i].isTerminado() == true || (c[i].getEstado().equalsIgnoreCase("accidentado") && jugadores > 1)) {
-					hanterminado++;
-				}
-				if (hanterminado == jugadores) {
-					juegoTerminado = true;
-				}
-			}
-		} while (!juegoTerminado);
-
-		return juegoTerminado;
-	}
-
-	private static int dorsalBot() {
-		int dorsal = 0;
-		Random r = new Random();
-
-		dorsal = r.nextInt(4);
-
-		return dorsal;
-	}
-
+	//no funciona con 0 humanos o con muchos jugadores bot (mas de 3 por jugador humano)
+	//sique saliendo el error de pedir mas jugadores humanos de los que hay en ciertas ocasiones
 	public static void main(String[] args) {
 		boolean correcto = false;
-		boolean bot = false;
+
 		boolean terminado = false;
-		int numJugadoresBot = 1;
-		int numJugadoresHumanos = 1;// not implemented
-		int dorsal = 0;
+		int numJugadoresBot = 0;
+		int numJugadoresHumanos = 0;
+		String puesto[];
 		int opc = 0;
-		String nombre_piloto = "";
+
 		double distancia_carrera = 0;
-		int cont = 0;
-		Coche c[];
+
+		
 
 		Scanner leerS = new Scanner(System.in);
 		Scanner leerI = new Scanner(System.in);
@@ -116,22 +32,41 @@ public class Main {
 				distancia_carrera = leerD.nextDouble();
 				correcto = true;
 			} catch (Exception e) {
-				// TODO: handle exception
+				correcto = false;
 			}
 		} while (!correcto);
 		do {
 			leerI = new Scanner(System.in);
 			try {
+				correcto = true;
 				System.out.println("cuantos jugadores humanos hay?");
 				numJugadoresHumanos = leerI.nextInt();
-				System.out.println("cuantos bot hay?");
-				numJugadoresBot = leerI.nextInt();
+				
 			} catch (Exception e) {
-				// TODO: handle exception
+				correcto = false;
 			}
 
 		} while (!correcto);
-		c = new Coche[(numJugadoresHumanos + numJugadoresBot)];
+		
+		do {
+			leerI = new Scanner(System.in);
+			try {
+				correcto = true;
+				System.out.println("cuantos bot hay?");
+				numJugadoresBot = leerI.nextInt();
+			} catch (Exception e) {
+				correcto = false;
+			}
+
+		} while (!correcto);
+		
+		
+		
+		
+		Carrera carrera = new Carrera("nombreCarrera", distancia_carrera, numJugadoresHumanos, numJugadoresBot);
+		
+		
+		puesto = new String[(numJugadoresHumanos + numJugadoresBot)];
 
 		do {
 			opc = Menu.mainMenu();
@@ -141,94 +76,23 @@ public class Main {
 			switch (opc) {
 			case 1:
 
-				for (int i = 0; i < c.length; i++) {
-					do {
-						try {
-							correcto = true;
-
-							if (numJugadoresHumanos != 0 && cont < numJugadoresHumanos) {
-								System.out.println("escribe el dorsal");
-								dorsal = leerI.nextInt();
-								for (int j = 0; j < numJugadoresHumanos; j++) {
-									do {
-										correcto = true;
-										if (c[j] != null && (c[j].getDorsal() == dorsal)) {
-											System.out.println("el dorsal ya esta escogido");
-											correcto = false;
-											cont--;
-											j--;
-										}
-									} while (!correcto);
-
-								}
-
-								System.out.println("escribe el nombre");
-								nombre_piloto = leerS.nextLine();
-								bot = false;
-								cont++;
-							} else if (cont <= (numJugadoresBot + numJugadoresHumanos)) {
-
-								for (int j = (numJugadoresHumanos); j < numJugadoresBot; j++) {
-
-									do {
-										correcto = true;
-										dorsal = dorsalBot();
-
-										nombre_piloto = "bot " + (i + 1 - (numJugadoresHumanos));
-										for (int p = 0; p < c.length; p++) {
-											if (c[p] != null && (c[p].getDorsal() == dorsal)) {
-
-												correcto = false;
-												cont--;
-												j--;
-											}
-										}
-
-									} while (!correcto);
-								}
-								bot = true;
-							}
-						} catch (Exception e) {
-							correcto = false;
-						}
-					} while (!correcto);
-					c[i] = new Coche(nombre_piloto, dorsal, distancia_carrera, bot);
-				}
+				carrera.añadirJugadores();
 
 				break;
-			// fin opc 1
-			// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			case 2:
 
-				for (int i = 0; i < c.length; i++) {
-					if (c[i] == null) {
-						System.out.println("la carrera no se configuro correctamente");
-						for (int j = 0; j < c.length; j++) {
-							c[j] = null;
-							correcto = false;
-						}
-						break;
-					} else {
-						c[i].setEstado("marcha");
-						correcto = true;
-					}
-				}
+				correcto = carrera.IniciarCarera();
 				break;
 			case 3:
 
-				if (correcto && (numJugadoresHumanos > 0)) {
-
-					terminado = jugar(c, (numJugadoresHumanos + numJugadoresBot));
-					if (terminado) {
-						opc = 4;
-					}
-
-				} else if (numJugadoresHumanos > 0) {
-					System.out.println("inicia la carrera");
-				} else {
-					System.out.println("NO TIENES PERMISO, es una carrera exclusiva de bots");
+				terminado=carrera.juego(correcto, puesto);
+				
+				for (int i = 0; i < puesto.length; i++) {
+					System.out.println( "En el puesto numero "+(i+1)+" " + puesto[i]);
 				}
-
+				
+				if (terminado)
+					opc = 4;
 				break;
 
 			default:
