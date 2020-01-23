@@ -12,6 +12,7 @@ public class Coche {
 	private double km_recorridos;
 	private boolean bot;
 	private boolean terminado;
+	private boolean tenerPuesto;
 
 	public Coche(String nombre_piloto, int dorsal, double distancia_carrera, boolean bot) {
 		this.nombre_piloto = nombre_piloto;
@@ -23,7 +24,19 @@ public class Coche {
 		this.km_recorridos = 0;
 		this.bot = bot;
 		terminado = false;
+		tenerPuesto=false;
 	}
+
+	
+	public boolean isTenerPuesto() {
+		return tenerPuesto;
+	}
+
+
+	public void setTenerPuesto(boolean tenerPuesto) {
+		this.tenerPuesto = tenerPuesto;
+	}
+
 
 	public boolean isTerminado() {
 		return terminado;

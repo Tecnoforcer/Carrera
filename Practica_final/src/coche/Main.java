@@ -6,12 +6,13 @@ import java.util.Scanner;
 
 public class Main {
 
-	//no funciona con 0 humanos o con muchos jugadores bot (mas de 3 por jugador humano)
-	//sique saliendo el error de pedir mas jugadores humanos de los que hay en ciertas ocasiones
+	//no funciona con 0 humanos
 	public static void main(String[] args) {
 		boolean correcto = false;
 
 		boolean terminado = false;
+		boolean añadidos = false;
+		
 		int numJugadoresBot = 0;
 		int numJugadoresHumanos = 0;
 		String puesto[];
@@ -26,11 +27,13 @@ public class Main {
 		Scanner leerD = new Scanner(System.in);
 
 		do {
+			leerD = new Scanner(System.in);
 			try {
-//						numJugadores=leer el numero(entero)
-				System.out.println("cuantos Km tiene el circuito");
-				distancia_carrera = leerD.nextDouble();
 				correcto = true;
+
+				System.out.println("cuantos Km tiene el circuito     (numero)");
+				distancia_carrera = leerD.nextDouble();
+				
 			} catch (Exception e) {
 				correcto = false;
 			}
@@ -39,7 +42,7 @@ public class Main {
 			leerI = new Scanner(System.in);
 			try {
 				correcto = true;
-				System.out.println("cuantos jugadores humanos hay?");
+				System.out.println("cuantos jugadores humanos hay?     (numero entero)");
 				numJugadoresHumanos = leerI.nextInt();
 				
 			} catch (Exception e) {
@@ -52,7 +55,7 @@ public class Main {
 			leerI = new Scanner(System.in);
 			try {
 				correcto = true;
-				System.out.println("cuantos bot hay?");
+				System.out.println("cuantos bot hay?     (numero entero)");
 				numJugadoresBot = leerI.nextInt();
 			} catch (Exception e) {
 				correcto = false;
@@ -70,14 +73,17 @@ public class Main {
 
 		do {
 			opc = Menu.mainMenu();
-			leerD = new Scanner(System.in);
-			leerI = new Scanner(System.in);
-			leerS = new Scanner(System.in);
+//			leerD = new Scanner(System.in);
+//			leerI = new Scanner(System.in);
+//			leerS = new Scanner(System.in);
 			switch (opc) {
 			case 1:
-
+				if (!añadidos)
 				carrera.añadirJugadores();
-
+				else
+					System.out.println("ya se realizo esta operacion");
+				
+				añadidos=true;
 				break;
 			case 2:
 
@@ -88,7 +94,7 @@ public class Main {
 				terminado=carrera.juego(correcto, puesto);
 				
 				for (int i = 0; i < puesto.length; i++) {
-					System.out.println( "En el puesto numero "+(i+1)+" " + puesto[i]);
+					System.out.println( "En el puesto numero esta: "+(i+1)+" " + puesto[i]);
 				}
 				
 				if (terminado)

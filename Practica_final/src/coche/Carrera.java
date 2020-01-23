@@ -9,23 +9,20 @@ public class Carrera {
 	private Coche[] vCoches;
 	private int numJugadoresHumanos;
 	private int numJugadoresBot;
-	
-	
-	
-public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, int numJugadoresBot) {
+
+	public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, int numJugadoresBot) {
 		this.nombreCarrera = nombreCarrera;
 		this.distancia = distancia;
-		this.numJugadoresBot=numJugadoresBot;
-		this.numJugadoresHumanos=numJugadoresHumanos;
-		vCoches = new Coche[(this.numJugadoresBot+this.numJugadoresHumanos)];
+		this.numJugadoresBot = numJugadoresBot;
+		this.numJugadoresHumanos = numJugadoresHumanos;
+		vCoches = new Coche[(this.numJugadoresBot + this.numJugadoresHumanos)];
 	}
-
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::añadir_jugadores:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	private static int dorsalBot() {
 		int dorsal = 0;
 		Random r = new Random();
-		
+
 		dorsal = r.nextInt();
 
 		return dorsal;
@@ -49,11 +46,11 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 				try {
 					correcto = true;
 
-					if (cont <= numJugadoresHumanos &&numJugadoresHumanos != 0  ) {
+					if (cont <= numJugadoresHumanos && numJugadoresHumanos != 0) {
 						leerI = new Scanner(System.in);
 						leerS = new Scanner(System.in);
 						correcto = true;
-						System.out.println("escribe el dorsal");
+						System.out.println("escribe el dorsal     (numero entero)");
 						dorsal = leerI.nextInt();
 						correcto = true;
 						for (int j = 0; j < numJugadoresHumanos; j++) {
@@ -73,7 +70,7 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 						cont++;
 					} else if (cont > (numJugadoresHumanos)) {
 
-						for (int j = (numJugadoresHumanos); j < numJugadoresBot; j++) {
+						for (int j = (numJugadoresHumanos); j < (numJugadoresBot+numJugadoresHumanos); j++) {
 
 							do {
 								correcto = true;
@@ -94,7 +91,7 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 					correcto = false;
 				}
 			} while (!correcto);
-		
+
 			vCoches[i] = new Coche(nombre_piloto, dorsal, this.distancia, bot);
 		}
 	}
@@ -102,8 +99,8 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::iniciar_carrera:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public boolean IniciarCarera() {
-		boolean correcto=true;
-		
+		boolean correcto = true;
+
 		for (int i = 0; i < vCoches.length; i++) {
 			if (vCoches[i] == null) {
 				System.out.println("la carrera no se configuro correctamente");
@@ -124,7 +121,7 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FIN_iniciar_carrera::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::jugar:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	// inicio buscar buesto
-	private int buscarPuesto(String puesto[]) {
+	private int buscarPuesto(String puesto[]) {//ni idea
 		int pos = 0;
 		for (int i = 0; i < puesto.length; i++) {
 			if (puesto[i] == null) {
@@ -137,7 +134,7 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 	}
 
 	// inicio metodo jugar
-	private  boolean jugar(int jugadores, String puesto[]) {
+	private boolean jugar(int jugadores, String puesto[]) {
 		boolean juegoTerminado = false;
 		boolean terminado = false;// sobra?
 		int opcAUX = 0;
@@ -150,7 +147,9 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 			for (int i = 0; i < vCoches.length; i++) {
 
 				if (!vCoches[i].isTerminado() && !vCoches[i].isBot()) {
-					System.out.println("jugador: " + vCoches[i].getNombre_piloto() + " Dorsal: " + vCoches[i].getDorsal());
+					System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+					System.out.println(
+							"jugador: " + vCoches[i].getNombre_piloto() + " Dorsal: " + vCoches[i].getDorsal());
 					opcAUX = Menu.gameMenu();
 					switch (opcAUX) {
 					case 1:
@@ -169,11 +168,18 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 
 					if (vCoches[i].getKm_recorridos() >= vCoches[i].getDistancia_carrera()) {
 						vCoches[i].setTerminado(true);
-						pos = buscarPuesto(puesto);
+						
+						if (!vCoches[i].isTenerPuesto()) {
+							pos = buscarPuesto(puesto);
 
 						puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
+						}
+						vCoches[i].setTenerPuesto(true);
+						
+						
 						System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");
 					}
+					System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 				} else if (!vCoches[i].isTerminado() && vCoches[i].isBot()) {
 					r = new Random();
 					botaction = r.nextInt(3);
@@ -197,20 +203,23 @@ public Carrera(String nombreCarrera, double distancia, int numJugadoresHumanos, 
 
 					if (vCoches[i].getKm_recorridos() >= vCoches[i].getDistancia_carrera()) {
 						vCoches[i].setTerminado(true);
-						pos = buscarPuesto(puesto);
-
-						puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
-						if (vCoches[i].isBot()) {
-							System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");
+						if (!vCoches[i].isTenerPuesto()) {
+							pos = buscarPuesto(puesto);
+							puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
 						}
+						
+						vCoches[i].setTenerPuesto(true);
+
+							System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");//////////////////////////////////////////////////////////////////////////////
 					}
 				}
-
-			}
-				hanterminado = 0;
-			for (int i = 0; i < vCoches.length; i++) {
 				
-				if ((vCoches[i].isTerminado() == true || (vCoches[i].getEstado().equalsIgnoreCase("accidentado")) && jugadores > 1)) {
+			}
+			hanterminado = 0;
+			for (int i = 0; i < vCoches.length; i++) {
+
+				if ((vCoches[i].isTerminado() == true
+						|| (vCoches[i].getEstado().equalsIgnoreCase("accidentado")) && jugadores > 1)) {
 					hanterminado++;
 				}
 				if (hanterminado == jugadores) {
