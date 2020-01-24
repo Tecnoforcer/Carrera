@@ -92,7 +92,10 @@ public class Main {
 			case 3:
 
 				terminado=carrera.juego(correcto, puesto);
-				
+				System.out.println("");
+				System.out.println("");
+				System.out.println("");
+				System.out.println("");
 				for (int i = 0; i < puesto.length; i++) {
 					System.out.println( "En el puesto numero esta: "+(i+1)+" " + puesto[i]);
 				}

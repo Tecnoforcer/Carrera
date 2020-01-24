@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Carrera {
-	private String nombreCarrera;
+	private String nombreCarrera;//no esta puesto 
 	private double distancia;
 	private Coche[] vCoches;
 	private int numJugadoresHumanos;
@@ -19,6 +19,7 @@ public class Carrera {
 	}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::añadir_jugadores:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	//inicio buscar dorsal a bot
 	private static int dorsalBot() {
 		int dorsal = 0;
 		Random r = new Random();
@@ -27,7 +28,8 @@ public class Carrera {
 
 		return dorsal;
 	}
-
+	//fin buscar dorsal bot
+	//inicio metodo añadir
 	public void añadirJugadores() {
 		Scanner leerS = new Scanner(System.in);
 		Scanner leerI = new Scanner(System.in);
@@ -95,6 +97,7 @@ public class Carrera {
 			vCoches[i] = new Coche(nombre_piloto, dorsal, this.distancia, bot);
 		}
 	}
+	// fin metodo añadir
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FIN_añadir_jugadores:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::iniciar_carrera:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -120,7 +123,7 @@ public class Carrera {
 
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FIN_iniciar_carrera::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::jugar:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	// inicio buscar buesto
+	// inicio buscar puesto
 	private int buscarPuesto(String puesto[]) {//ni idea
 		int pos = 0;
 		for (int i = 0; i < puesto.length; i++) {
@@ -132,7 +135,8 @@ public class Carrera {
 
 		return pos;
 	}
-
+	//fin buscar puesto
+	
 	// inicio metodo jugar
 	private boolean jugar(int jugadores, String puesto[]) {
 		boolean juegoTerminado = false;
@@ -226,6 +230,11 @@ public class Carrera {
 					juegoTerminado = true;
 				}
 			}
+			
+			
+			
+			
+			
 		} while (!juegoTerminado);
 
 		return juegoTerminado;
@@ -251,4 +260,5 @@ public class Carrera {
 		}
 		return terminado;
 	}
+	//fin gestion metodo jugar
 }
