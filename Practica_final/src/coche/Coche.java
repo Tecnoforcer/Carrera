@@ -114,8 +114,8 @@ public class Coche {
 			velocidad += calcularAceleracion();
 			km_recorridos += velocidad;
 			if (!bot) {
-				System.out.println("Km recorridos" + km_recorridos);
 				System.out.println("velocidad: " + velocidad);
+				System.out.println("Km recorridos" + km_recorridos);
 			}
 
 			if (velocidad >= 200) {

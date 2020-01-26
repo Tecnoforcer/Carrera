@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Carrera {
-	private String nombreCarrera;//no esta puesto 
+	private String nombreCarrera;// no esta puesto
 	private double distancia;
 	private Coche[] vCoches;
 	private int numJugadoresHumanos;
@@ -19,7 +19,7 @@ public class Carrera {
 	}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::añadir_jugadores:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	//inicio buscar dorsal a bot
+	// inicio buscar dorsal a bot
 	private static int dorsalBot() {
 		int dorsal = 0;
 		Random r = new Random();
@@ -28,8 +28,9 @@ public class Carrera {
 
 		return dorsal;
 	}
-	//fin buscar dorsal bot
-	//inicio metodo añadir
+
+	// fin buscar dorsal bot
+	// inicio metodo añadir
 	public void añadirJugadores() {
 		Scanner leerS = new Scanner(System.in);
 		Scanner leerI = new Scanner(System.in);
@@ -72,7 +73,7 @@ public class Carrera {
 						cont++;
 					} else if (cont > (numJugadoresHumanos)) {
 
-						for (int j = (numJugadoresHumanos); j < (numJugadoresBot+numJugadoresHumanos); j++) {
+						for (int j = (numJugadoresHumanos); j < (numJugadoresBot + numJugadoresHumanos); j++) {
 
 							do {
 								correcto = true;
@@ -122,9 +123,21 @@ public class Carrera {
 	}
 
 	// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FIN_iniciar_carrera::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	//:::::::::::::utilidades
+	private void esterar() {
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+	}
+	
+	
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::jugar:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	// inicio buscar puesto
-	private int buscarPuesto(String puesto[]) {//ni idea
+	private int buscarPuesto(String puesto[]) {// ni idea
 		int pos = 0;
 		for (int i = 0; i < puesto.length; i++) {
 			if (puesto[i] == null) {
@@ -135,8 +148,8 @@ public class Carrera {
 
 		return pos;
 	}
-	//fin buscar puesto
-	
+	// fin buscar puesto
+
 	// inicio metodo jugar
 	private boolean jugar(int jugadores, String puesto[]) {
 		boolean juegoTerminado = false;
@@ -152,8 +165,9 @@ public class Carrera {
 
 				if (!vCoches[i].isTerminado() && !vCoches[i].isBot()) {
 					System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-					System.out.println(
-							"jugador: " + vCoches[i].getNombre_piloto() + " Dorsal: " + vCoches[i].getDorsal());
+					System.out.println("jugador: " + vCoches[i].getNombre_piloto() + " Dorsal: " + vCoches[i].getDorsal());
+					System.out.println("velocidad: "+ vCoches[i].getVelocidad());
+					System.out.println("Km recorridos: "+ vCoches[i].getKm_recorridos());
 					opcAUX = Menu.gameMenu();
 					switch (opcAUX) {
 					case 1:
@@ -172,15 +186,14 @@ public class Carrera {
 
 					if (vCoches[i].getKm_recorridos() >= vCoches[i].getDistancia_carrera()) {
 						vCoches[i].setTerminado(true);
-						
+
 						if (!vCoches[i].isTenerPuesto()) {
 							pos = buscarPuesto(puesto);
 
-						puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
+							puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
 						}
 						vCoches[i].setTenerPuesto(true);
-						
-						
+
 						System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");
 					}
 					System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
@@ -211,13 +224,13 @@ public class Carrera {
 							pos = buscarPuesto(puesto);
 							puesto[pos] = vCoches[i].getNombre_piloto() + " con dorsal " + vCoches[i].getDorsal();
 						}
-						
+
 						vCoches[i].setTenerPuesto(true);
 
-							System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");//////////////////////////////////////////////////////////////////////////////
+						System.out.println(vCoches[i].getNombre_piloto() + " ha terminado");//////////////////////////////////////////////////////////////////////////////
 					}
 				}
-				
+
 			}
 			hanterminado = 0;
 			for (int i = 0; i < vCoches.length; i++) {
@@ -230,16 +243,17 @@ public class Carrera {
 					juegoTerminado = true;
 				}
 			}
-			System.out.println("//////////////////////////////////////////////////////////////////////////////////////////////////");
+			
+			esterar();
+			System.out.println(
+					"//////////////////////////////////////////////////////////////////////////////////////////////////");
 			for (int i = 0; i < vCoches.length; i++) {
-				
+
 				Dibujo.pintarCoche(vCoches, i);
 			}
-			System.out.println("//////////////////////////////////////////////////////////////////////////////////////////////////");
-			
-			
-			
-			
+			System.out.println(
+					"//////////////////////////////////////////////////////////////////////////////////////////////////");
+
 		} while (!juegoTerminado);
 
 		return juegoTerminado;
@@ -265,5 +279,5 @@ public class Carrera {
 		}
 		return terminado;
 	}
-	//fin gestion metodo jugar
+	// fin gestion metodo jugar
 }

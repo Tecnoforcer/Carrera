@@ -97,7 +97,7 @@ public class Main {
 				System.out.println("");
 				System.out.println("");
 				for (int i = 0; i < puesto.length; i++) {
-					System.out.println( "En el puesto numero esta: "+(i+1)+" " + puesto[i]);
+					System.out.println( "En el puesto numero "+(i+1)+ " esta: "+" " + puesto[i]);
 				}
 				
 				if (terminado)
